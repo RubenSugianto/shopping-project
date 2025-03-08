@@ -1,5 +1,14 @@
-export default function Cart({ items, onUpdateItemQuantity }) {
-  const totalPrice = items.reduce(
+import { useContext } from 'react';
+
+import { CartContext } from "../store/shopping-cart-context.jsx";
+
+export default function Cart({ onUpdateItemQuantity }) {
+
+  // bisa pake use aja, kelebihannya kalo ditaro di if else bisa, use context gabisa
+  // use kekuranganya ga support di React Version 19 atau lebih tinggi
+  const cartCtx = useContext(CartContext);
+
+  const totalPrice = cartCtx.items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
@@ -7,10 +16,10 @@ export default function Cart({ items, onUpdateItemQuantity }) {
 
   return (
     <div id="cart">
-      {items.length === 0 && <p>No items in cart!</p>}
-      {items.length > 0 && (
+      {cartCtx.items.length === 0 && <p>No items in cart!</p>}
+      {cartCtx.items.length > 0 && (
         <ul id="cart-items">
-          {items.map((item) => {
+          {cartCtx.items.map((item) => {
             const formattedPrice = `$${item.price.toFixed(2)}`;
 
             return (
