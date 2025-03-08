@@ -2,11 +2,16 @@ import { useContext } from 'react';
 
 import { CartContext } from "../store/shopping-cart-context.jsx";
 
-export default function Cart({ onUpdateItemQuantity }) {
+export default function Cart() {
 
   // bisa pake use aja, kelebihannya kalo ditaro di if else bisa, use context gabisa
   // use kekuranganya ga support di React Version 19 atau lebih tinggi
-  const { items } = useContext(CartContext);
+
+  // Selain bisa pake useContext, bisa juga pake CartContext.Consumer
+  // Dia jadi gaperlu useContext dan import lagi, tp tinggal di wrapped di returnnya
+
+  // Use Context ini dia render ulang, mirip Use State
+  const { items, updateItemQuantity} = useContext(CartContext);
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -29,11 +34,11 @@ export default function Cart({ onUpdateItemQuantity }) {
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => onUpdateItemQuantity(item.id, -1)}>
+                  <button onClick={() => updateItemQuantity(item.id, -1)}>
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => onUpdateItemQuantity(item.id, 1)}>
+                  <button onClick={() => updateItemQuantity(item.id, 1)}>
                     +
                   </button>
                 </div>
